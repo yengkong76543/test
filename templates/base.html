@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Law Insight{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container nav-content">
+            <div class="brand">Law Insight</div>
+            <nav>
+                <a href="#hero">Home</a>
+                <a href="#articles">Articles</a>
+                <a href="#about">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div>
+                <h3>Law Insight</h3>
+                <p>Concise legal knowledge, simplified.</p>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <p>Email: contact@lawinsight.com</p>
+            </div>
+        </div>
+        <p class="footer-note">© 2025 Law Insight. All rights reserved.</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/fingerprint.js') }}"></script>
+</body>
+</html>
