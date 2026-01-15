@@ -1,12 +1,15 @@
 {
+  "builds": [
+    {
+      "src": "apt/index.py",
+      "use": "@vercel/python"
+    }
+  ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
       "src": "/(.*)",
-      "dest": "app.py"
+      "dest": "api/index.py"
     }
   ]
 }
+
