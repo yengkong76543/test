@@ -1,7 +1,8 @@
 {
+  "version": 2,
   "builds": [
     {
-      "src": "apt/index.py",
+      "src": "api/index.py",
       "use": "@vercel/python"
     }
   ],
@@ -12,4 +13,3 @@
     }
   ]
 }
-
