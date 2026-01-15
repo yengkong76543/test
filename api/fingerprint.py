@@ -3,8 +3,8 @@ import os
 import requests
 from datetime import datetime
 
-SUPABASE_URL = os.environ["SUPABASE_URL"]
-SUPABASE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
+SUPABASE_URL = os.environ["https://zqtpfdecejzfvnbsglgb.supabase.co"]
+SUPABASE_KEY = os.environ["sb_publishable_71sOetWHfO8f3vy0l6x1dQ_2zv77QKb"]
 
 def handler(request):
     if request.method != "POST":
