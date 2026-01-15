@@ -1,23 +1,31 @@
-from flask import Flask, request, jsonify
-import requests, os
+import json
+import os
+import requests
 from datetime import datetime
 
-app = Flask(__name__)
+SUPABASE_URL = os.environ["SUPABASE_URL"]
+SUPABASE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
 
-SUPABASE_URL = os.environ.get("https://zqtpfdecejzfvnbsglgb.supabase.co")
-SUPABASE_KEY = os.environ.get("sb_publishable_71sOetWHfO8f3vy0l6x1dQ_2zv77QKb")
+def handler(request):
+    if request.method != "POST":
+        return {
+            "statusCode": 405,
+            "body": "Method Not Allowed"
+        }
 
-@app.route("/api/fingerprint", methods=["POST"])
-def collect():
-    data = request.get_json(silent=True) or {}
+    try:
+        body = request.json() or {}
+    except:
+        body = {}
 
     payload = {
-        "ip": request.headers.get("x-forwarded-for", request.remote_addr),
-        "user_agent": request.headers.get("user-agent"),
-        "data": data
+        "created_at": datetime.utcnow().isoformat(),
+        "ip": request.headers.get("x-forwarded-for", ""),
+        "user_agent": request.headers.get("user-agent", ""),
+        "fingerprint": body
     }
 
-    r = requests.post(
+    res = requests.post(
         f"{SUPABASE_URL}/rest/v1/fingerprints",
         headers={
             "apikey": SUPABASE_KEY,
@@ -29,7 +37,13 @@ def collect():
         timeout=5
     )
 
-    if r.status_code not in (200, 201, 204):
-        print("❌ SUPABASE ERROR:", r.text)
+    if res.status_code not in (200, 201, 204):
+        return {
+            "statusCode": 500,
+            "body": res.text
+        }
 
-    return jsonify({"ok": True})
+    return {
+        "statusCode": 200,
+        "body": json.dumps({"ok": True})
+    }
