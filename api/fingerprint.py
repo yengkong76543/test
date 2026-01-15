@@ -1,38 +1,28 @@
-import json
-import os
-import requests
+from flask import Request, jsonify
+import os, requests
 from datetime import datetime
 
-def handler(request):
-    try:
-        data = request.json or {}
+def handler(request: Request):
+    if request.method != "POST":
+        return jsonify({"error": "Method not allowed"}), 405
 
-        payload = {
-            "ip": request.headers.get("x-forwarded-for"),
-            "user_agent": request.headers.get("user-agent"),
-            "fingerprint": data,
-            "created_at": datetime.utcnow().isoformat()
-        }
+    data = request.get_json(silent=True) or {}
 
-        r = requests.post(
-            f"{os.environ['SUPABASE_URL']}/rest/v1/fingerprints",
-            headers={
-                "apikey": os.environ["SUPABASE_SERVICE_ROLE_KEY"],
-                "Authorization": f"Bearer {os.environ['SUPABASE_SERVICE_ROLE_KEY']}",
-                "Content-Type": "application/json",
-                "Prefer": "return=minimal"
-            },
-            json=payload,
-            timeout=5
-        )
+    payload = {
+        "ip": request.headers.get("x-forwarded-for", ""),
+        "user_agent": request.headers.get("user-agent"),
+        "fingerprint": data,
+        "created_at": datetime.utcnow().isoformat()
+    }
 
-        return {
-            "statusCode": 200,
-            "body": json.dumps({"ok": True})
-        }
+    r = requests.post(
+        f"{os.environ['SUPABASE_URL']}/rest/v1/fingerprints",
+        headers={
+            "apikey": os.environ["SUPABASE_SERVICE_ROLE_KEY"],
+            "Authorization": f"Bearer {os.environ['SUPABASE_SERVICE_ROLE_KEY']}",
+            "Content-Type": "application/json"
+        },
+        json=payload
+    )
 
-    except Exception as e:
-        return {
-            "statusCode": 500,
-            "body": json.dumps({"error": str(e)})
-        }
+    return jsonify({"ok": True})
