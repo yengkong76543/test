@@ -1,31 +1,20 @@
-import json
 import os
 import requests
-from datetime import datetime
+from flask import request, jsonify
 
-SUPABASE_URL = os.environ["https://zqtpfdecejzfvnbsglgb.supabase.co"]
-SUPABASE_KEY = os.environ["sb_publishable_71sOetWHfO8f3vy0l6x1dQ_2zv77QKb"]
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
 
-def handler(request):
-    if request.method != "POST":
-        return {
-            "statusCode": 405,
-            "body": "Method Not Allowed"
-        }
-
-    try:
-        body = request.json() or {}
-    except:
-        body = {}
+def handler(req):
+    data = req.get_json(silent=True) or {}
 
     payload = {
-        "created_at": datetime.utcnow().isoformat(),
-        "ip": request.headers.get("x-forwarded-for", ""),
-        "user_agent": request.headers.get("user-agent", ""),
-        "fingerprint": body
+        "ip": req.headers.get("x-forwarded-for"),
+        "user_agent": req.headers.get("user-agent"),
+        "fingerprint": data
     }
 
-    res = requests.post(
+    r = requests.post(
         f"{SUPABASE_URL}/rest/v1/fingerprints",
         headers={
             "apikey": SUPABASE_KEY,
@@ -33,17 +22,10 @@ def handler(request):
             "Content-Type": "application/json",
             "Prefer": "return=minimal"
         },
-        json=payload,
-        timeout=5
+        json=payload
     )
 
-    if res.status_code not in (200, 201, 204):
-        return {
-            "statusCode": 500,
-            "body": res.text
-        }
+    print("SUPABASE STATUS:", r.status_code)
+    print("SUPABASE BODY:", r.text)
 
-    return {
-        "statusCode": 200,
-        "body": json.dumps({"ok": True})
-    }
+    return jsonify({"ok": True})
