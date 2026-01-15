@@ -3,7 +3,7 @@ import requests, os
 
 app = Flask(__name__)
 
-SUPABASE_URL = os.environ["https://supabase.com/"]
+SUPABASE_URL = os.environ["https://zqtpfdecejzfvnbsglgb.supabase.co"]
 SUPABASE_KEY = os.environ["sb_publishable_71sOetWHfO8f3vy0l6x1dQ_2zv77QKb"]
 
 @app.route("/", methods=["POST"])
