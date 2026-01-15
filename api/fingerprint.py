@@ -4,8 +4,8 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-SUPABASE_URL = os.environ.get["https://zqtpfdecejzfvnbsglgb.supabase.co"]
-SUPABASE_KEY = os.environ.get["sb_publishable_71sOetWHfO8f3vy0l6x1dQ_2zv77QKb"]
+SUPABASE_URL = os.environ.get("https://zqtpfdecejzfvnbsglgb.supabase.co")
+SUPABASE_KEY = os.environ.get("sb_publishable_71sOetWHfO8f3vy0l6x1dQ_2zv77QKb")
 
 @app.route("/api/fingerprint", methods=["POST"])
 def collect():
