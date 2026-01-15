@@ -29,3 +29,4 @@ def collect_fingerprint():
     )
 
     return jsonify({"ok": True, "status": r.status_code})
+    print("fingerprint: ", data)
