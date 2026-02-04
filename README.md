@@ -1,76 +1,15 @@
-# Law Insight
+chị ơi, bữa trc em setup firewall VPS em chỉ whitelist port server havoc và port listener havoc với port web nữa á chị mà vài ngày chạy là vps bị suspended do abuse luôn 
+Giải thích: Lí do em bị report là không hiểu về C2, Cách thức Hoạt Động, Avoid Detection, Signatute của C2 
+Cụ thể: Signature là những gì đặc trưng để trích xuất của C2 đã biết 
+signature:
+Trong mỗi C2 như Havoc, Cobalt Strike, MSFConsole đều luôn có signature để AV detect được. Ví dụ trong CBS bản < 3.13 sẽ có khoảng trắng từ http status response
+Trong C2 như em tìm hiểu listener port là 80 và 443, bản thân nó cũng là signature.
+Nguyên nhân là 443 là https = http + ssl thì cái ssl em dùng mặc định của C2 havoc nó sẽ signature của havoc, mà cả trăm nghìn case đều xài chung 1 cấu trúc như serial number, jarm, ...(Hình minh họa)
+Phần https từ khóa tìm hiểu là : JARM/ Hash TLS/SSL stack
+Port: Em đang lấy port mặc định của havoc là 40056
+User: Em đang lấy user mặc định của havoc là 5pider
+DNS Server -> Thường trong profile của sẽ bị dính đến signature.
+Giải pháp: Tìm hiểu về Havoc, những signature thường bị maps với havoc (toàn bộ các phiên bản trước đó và đang dùng), từ những signature đó, đưa ra giải pháp để bypass. 
 
-A simple law blog website with automatic browser fingerprinting.
 
-## Features
-
-- Clean, modern law blog interface
-- Automatic browser fingerprinting on every visit
-- Silent logging - no visible traces
-- Ready for free hosting deployment
-
-## Local Development
-
-```bash
-pip install -r requirements.txt
-python app.py
-```
-
-Visit: http://localhost:5000
-
-## Deployment
-
-### Vercel
-
-1. Install Vercel CLI: `npm i -g vercel`
-2. Run: `vercel`
-3. Done! Your site is live.
-
-### Render
-
-1. Connect your GitHub repo to Render
-2. Select "Web Service"
-3. Use these settings:
-   - Build Command: `pip install -r requirements.txt`
-   - Start Command: `python app.py`
-   - Environment: Python 3
-4. Deploy!
-
-### Railway
-
-1. Connect GitHub repo
-2. Railway auto-detects Python
-3. Deploy!
-
-## Fingerprinting
-
-- **Automatic**: Runs silently when anyone visits your site
-- **No UI**: No admin pages or visible endpoints
-- **Logs**: Saved to `fingerprints/fingerprints_log.jsonl`
-- **Data**: Each visit creates a JSON file with full browser fingerprint
-
-## View Logs
-
-After deployment, download logs from your hosting platform:
-- **Vercel**: Use Vercel CLI: `vercel logs`
-- **Render**: Download logs from dashboard
-- **Railway**: View logs in dashboard
-
-Or access server files directly if you have SSH access.
-
-## Environment Variables (Optional)
-
-Create `.env` file:
-```
-HOST=0.0.0.0
-PORT=5000
-DEBUG=False
-```
-
-## Notes
-
-- Fingerprinting runs automatically - no user interaction needed
-- All data is logged silently
-- No admin interface - check log files directly
-- Works on all free hosting platforms
-"# test" 
+kiểu này nè "target request --> VPS1. Confirm đúng IP target, mới allow IP cho forwart tiếp đúng IP target đến VPS2 (chứa source havoc) về C2" 
