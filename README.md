@@ -13,3 +13,6 @@ Giải pháp: Tìm hiểu về Havoc, những signature thường bị maps vớ
 
 
 kiểu này nè "target request --> VPS1. Confirm đúng IP target, mới allow IP cho forwart tiếp đúng IP target đến VPS2 (chứa source havoc) về C2" 
+
+
+Client -> VPS 1 (port 80, 443) -> forward traffic VPS1:443 , VPS2:50000 -> VPS 2 (port 50000) -> RAT
